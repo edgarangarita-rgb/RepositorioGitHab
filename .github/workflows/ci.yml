@@ -1,4 +1,4 @@
-name: app_prueba-ci-cd
+name: aplicacionprueba-ci-cd
 
 on:
   push:
@@ -14,22 +14,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Use Node.js 18 
+      - name: Use Node.js 22 
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "22.x"
 
       - name: Install dependencies
         run: npm install
 
       - name: Run tests 
-        run: npm test -- --watch=false --no-progress --browsers=ChromeHeadless ||  echo #No hay pruebas 
+        run: npm test -- --watch=false --no-progress --browsers=ChromeHeadless ||  echo "No hay pruebas"
 
       - name: build project #paso 5: Construir el proyecto 
         run: npm run build -- --prod
 
       - name: build docker image  #paso 6: Construir la imagen de Docker de la app  
-        run: docker build -t app_prueba .
+        run: docker build -t aplicacionprueba .
       
       - name: Login to DockerHub  #paso 7: Iniciar sesión en DockerHub
         uses: docker/login-action@v2
@@ -39,9 +39,9 @@ jobs:
 
       - name: Push Docker image to Docker Hub #paso 8: Subir la imagen a DockerHub 
       # Renombrar la imagen con el nombre de usuario de DockerHub
-        run: docker tag app_prueba ${{ secrets.DOCKER_USERNAME }}/app_prueba
-        #Subir la imagen a DockerHub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/app_prueba
+        run: |
+          docker tag aplicacionprueba ${{ secrets.DOCKER_USERNAME }}/aplicacionprueba
+          docker push ${{ secrets.DOCKER_USERNAME }}/aplicacionprueba
 
 
 
