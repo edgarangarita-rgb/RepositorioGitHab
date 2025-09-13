@@ -6,7 +6,7 @@ Run npm install
 COPY . .
 RUN npm run build --prod
 
-FROM ngunx:alpine
+FROM nginx:alpine
 COPY --from=builder /app/dist/aplicacionprueba /usr/share/nginx/html 
 EXPOSE 80 
 CMD ["nginx", "-g", "daemon off;" ]
